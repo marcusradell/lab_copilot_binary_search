@@ -1,9 +1,8 @@
 import express from "express";
 import { createToysRouter } from "./kits";
 
-export const main = async () => {
+export const main = () => {
   const app = express();
-  const port = process.env.PORT || 3000;
 
   app.use(express.static("public"));
   app.use(express.json());
@@ -16,7 +15,5 @@ export const main = async () => {
     res.status(200).end();
   });
 
-  app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-  });
+  return app;
 };

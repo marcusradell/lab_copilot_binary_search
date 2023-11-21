@@ -1,11 +1,8 @@
 import request from "supertest";
-import { createToysRouter } from "./index";
-import express from "express";
-import bodyParser from "body-parser";
+import { main } from "../../main";
 
 const setup = () => {
-  const app = express();
-  app.use(bodyParser.json());
+  const app = main();
   return { app };
 };
 
@@ -13,12 +10,10 @@ describe("createToysRouter", () => {
   test("should return an empty list of toys", () => {
     // Arrange
     const { app } = setup();
-    app.use(bodyParser.json()); // Add bodyParser for JSON
-    app.use(createToysRouter());
 
     // Act & Assert
     return request(app)
-      .get("/")
+      .get("/api/v1/toys")
       .expect(200)
       .then((response) => {
         expect(response.body).toEqual([]);
@@ -29,8 +24,6 @@ describe("createToysRouter", () => {
     // Arrange
     const { app } = setup();
 
-    app.use(createToysRouter());
-
     const newToy = {
       name: "Teddy Bear",
       description: "A cute teddy bear",
@@ -38,7 +31,7 @@ describe("createToysRouter", () => {
 
     // Act & Assert
     return request(app)
-      .post("/")
+      .post("/api/v1/toys")
       .send(newToy)
       .expect(201)
       .then((response) => {
